@@ -18,7 +18,7 @@ st.title("Crime and Weather Analysis Dashboard")
 st.sidebar.title("Navigation")
 sectionTeam10 = st.sidebar.radio(
     "Go to",
-    ["Introduction", "Data Exploration", "Insights", "Recommendations"]
+    ["Introduction", "EDA", "Interactive Dashboard", "Insights", "Recommendations"]
 )
 
 if sectionTeam10 == "Introduction":
@@ -31,22 +31,62 @@ if sectionTeam10 == "Introduction":
 
     ### Objectives:
     1. Explore how weather conditions (e.g., temperature, precipitation) influence crime rates.
-    2. Find patterns in crime frequency and severity in various conditions.
+    2. Identify patterns in crime frequency and severity across different weather conditions.
     3. Provide actionable insights for law enforcement and city planners.
     """)
 
-elif sectionTeam10 == "Data Exploration":
-    st.header("Data Exploration")
+elif sectionTeam10 == "EDA":
+    # EDA Section
+    st.header("Exploratory Data Analysis (EDA)")
+
+    # Univariate Analysis: Histograms or Box Plots
+    st.subheader("Univariate Analysis")
+    st.write("Distribution of Temperature")
+    fig, ax = plt.subplots()
+    sns.histplot(dataTeam10['temp'], kde=True, ax=ax, bins=20)
+    plt.title("Distribution of Temperature")
+    plt.xlabel("Temperature (°C)")
+    plt.ylabel("Frequency")
+    st.pyplot(fig)
+
+    st.write("Box Plot of Precipitation")
+    fig, ax = plt.subplots()
+    sns.boxplot(x=dataTeam10['precip'], ax=ax)
+    plt.title("Box Plot of Precipitation")
+    st.pyplot(fig)
+
+    # Bivariate Analysis: Scatter Plot
+    st.subheader("Bivariate Analysis")
+    st.write("Temperature vs. Crime Frequency")
+    crime_tempTeam10 = dataTeam10.groupby('temp').size()
+    fig, ax = plt.subplots()
+    crime_tempTeam10.plot(ax=ax)
+    plt.title("Crime Frequency at Different Temperatures")
+    plt.xlabel("Temperature (°C)")
+    plt.ylabel("Crime Frequency")
+    st.pyplot(fig)
+
+    # Multivariate Analysis: Correlation Heatmap
+    st.subheader("Multivariate Analysis")
+    st.write("Correlation Heatmap")
+    numerical_cols = ['temp', 'precip', 'humidity', 'windspeed']
+    correlation = dataTeam10[numerical_cols].corr()
+    fig, ax = plt.subplots()
+    sns.heatmap(correlation, annot=True, cmap="coolwarm", ax=ax)
+    plt.title("Correlation Heatmap")
+    st.pyplot(fig)
+
+elif sectionTeam10 == "Interactive Dashboard":
+    # Interactive Dashboard Section
+    st.header("Interactive Dashboard")
 
     # Filter: Crime Type
-    st.sidebar.header("Filter")
+    st.sidebar.header("Interactive Filter")
     crime_filterTeam10 = st.sidebar.selectbox("Select Crime Type", dataTeam10['offensedescription'].unique())
-
-    # Filtered Data
     filtered_dataTeam10 = dataTeam10[dataTeam10['offensedescription'] == crime_filterTeam10]
 
-    # Univariate Analysis: Crime Types
-    st.subheader("Univariate Analysis: Distribution of Crime Types")
+    # Visualization 1: Bar Chart of Crime Types
+    st.subheader("Visualization 1: Crime Types Distribution")
     crime_countsTeam10 = dataTeam10['offensedescription'].value_counts()
     fig, ax = plt.subplots()
     crime_countsTeam10.plot(kind='bar', ax=ax)
@@ -55,23 +95,23 @@ elif sectionTeam10 == "Data Exploration":
     plt.ylabel("Frequency")
     st.pyplot(fig)
 
-    # Bivariate Analysis: Temperature vs. Crime Frequency
-    st.subheader("Bivariate Analysis: Temperature vs. Crime Frequency")
+    # Visualization 2: Scatter Plot for Selected Crime Type
+    st.subheader("Visualization 2: Temperature vs. Precipitation")
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=filtered_dataTeam10, x="temp", y="precip", ax=ax)
+    plt.title(f"Temperature vs. Precipitation ({crime_filterTeam10})")
+    plt.xlabel("Temperature (°C)")
+    plt.ylabel("Precipitation (mm)")
+    st.pyplot(fig)
+
+    # Visualization 3: Line Chart of Crime Frequency by Temperature
+    st.subheader("Visualization 3: Temperature vs. Crime Frequency")
     crime_tempTeam10 = filtered_dataTeam10.groupby('temp').size()
     fig, ax = plt.subplots()
     crime_tempTeam10.plot(ax=ax)
     plt.title(f"Crime Frequency at Different Temperatures ({crime_filterTeam10})")
     plt.xlabel("Temperature (°C)")
     plt.ylabel("Crime Frequency")
-    st.pyplot(fig)
-
-    # Multivariate Analysis: Temperature vs. Precipitation
-    st.subheader("Multivariate Analysis: Temperature vs. Precipitation")
-    fig, ax = plt.subplots()
-    sns.scatterplot(data=filtered_dataTeam10, x="temp", y="precip", ax=ax)
-    plt.title(f"Temperature vs. Precipitation ({crime_filterTeam10})")
-    plt.xlabel("Temperature (°C)")
-    plt.ylabel("Precipitation (mm)")
     st.pyplot(fig)
 
 elif sectionTeam10 == "Insights":
