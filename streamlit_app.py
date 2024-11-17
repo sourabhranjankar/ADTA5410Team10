@@ -9,7 +9,6 @@ def load_data():
     data = pd.read_excel('merged_police_weather_data.xlsx', sheet_name='Sheet1')
     data.dropna(subset=['offensedescription', 'temp', 'precip'], inplace=True)
     data['datetime'] = pd.to_datetime(data['datetime'])
-    data['month'] = data['datetime'].dt.month
     return data
 
 dataTeam10 = load_data()
@@ -39,31 +38,22 @@ if sectionTeam10 == "Introduction":
 elif sectionTeam10 == "Data Exploration":
     st.header("Data Exploration")
 
-    # Filters: Crime Type and Month
-    st.sidebar.header("Filters")
+    # Filter: Crime Type
+    st.sidebar.header("Filter")
     crime_filterTeam10 = st.sidebar.selectbox("Select Crime Type", dataTeam10['offensedescription'].unique())
-    month_filterTeam10 = st.sidebar.selectbox(
-        "Select Month",
-        options={
-            1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June",
-            7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"
-        },
-        format_func=lambda x: {
-            1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June",
-            7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"
-        }.get(x, "Unknown")
-    )
 
-    # Filter data
-    filtered_dataTeam10 = dataTeam10[
-        (dataTeam10['offensedescription'] == crime_filterTeam10) &
-        (dataTeam10['month'] == month_filterTeam10)
-    ]
+    # Filtered Data
+    filtered_dataTeam10 = dataTeam10[dataTeam10['offensedescription'] == crime_filterTeam10]
 
     # Univariate Analysis: Crime Types
-    st.subheader("Univariate Analysis: Crime Types")
+    st.subheader("Univariate Analysis: Distribution of Crime Types")
     crime_countsTeam10 = dataTeam10['offensedescription'].value_counts()
-    st.bar_chart(crime_countsTeam10.head(10))
+    fig, ax = plt.subplots()
+    crime_countsTeam10.plot(kind='bar', ax=ax)
+    plt.title("Distribution of Crime Types")
+    plt.xlabel("Crime Type")
+    plt.ylabel("Frequency")
+    st.pyplot(fig)
 
     # Bivariate Analysis: Temperature vs. Crime Frequency
     st.subheader("Bivariate Analysis: Temperature vs. Crime Frequency")
@@ -88,16 +78,16 @@ elif sectionTeam10 == "Insights":
     st.header("Key Insights")
     st.write("""
     1. **Crimes occur more frequently at moderate temperatures**: Increase around 20-25°C.
-    2. **Rainy days have less crimes**: Precipitation acts as a deterrant.
-    3. **Crime types changes with weather conditions**: E.g., thefts increase on warmer days.
+    2. **Rainy days have fewer crimes**: Precipitation acts as a deterrent.
+    3. **Crime types vary with weather conditions**: E.g., thefts increase on warmer days.
     """)
 
 elif sectionTeam10 == "Recommendations":
     st.header("Recommendations")
     st.write("""
     ### Suggested Actions:
-    1. Focus patrols in high-crime areas during moderate weather conditions..
-    2. Integrate weather forecasts for strategic planning.
-    3. Use predictive models to allocate resources based on weather-crime patterns.
-    4. Install smart surveillance systems in weather-prone crime hotspots.
+    1. Focus patrols in high-crime areas during moderate weather conditions.
+    2. Use predictive models to allocate resources based on weather-crime patterns.
+    3. Install smart surveillance systems in weather-prone crime hotspots.
+    4. Educate the public with alerts and seasonal safety campaigns.
     """)
