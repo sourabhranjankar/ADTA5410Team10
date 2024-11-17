@@ -39,7 +39,7 @@ elif sectionTeam10 == "EDA":
     # EDA Section
     st.header("Exploratory Data Analysis (EDA)")
 
-    # Univariate Analysis: Histograms or Box Plots
+    # Univariate Analysis: Histograms 
     st.subheader("Univariate Analysis")
     st.write("Distribution of Temperature")
     fig, ax = plt.subplots()
@@ -88,7 +88,7 @@ elif sectionTeam10 == "Interactive Dashboard":
     # Visualization 1: Crime Types Distribution (with filter)
     st.subheader("Visualization 1: Crime Types Distribution")
     st.write("Distribution of the selected crime type.")
-    
+    st.write("Shows the frequency of the selected crime type.")
     # Filtered data for the selected crime type
     filtered_countsTeam10 = dataTeam10[dataTeam10['offensedescription'] == crime_filterTeam10]['offensedescription'].value_counts()
     
@@ -105,6 +105,7 @@ elif sectionTeam10 == "Interactive Dashboard":
 
     # Visualization 2: Scatter Plot for Selected Crime Type
     st.subheader("Visualization 2: Temperature vs. Precipitation")
+    st.write("Show the relationship between temperature and precipitation for the selected crime type.")
     fig, ax = plt.subplots()
     sns.scatterplot(data=filtered_dataTeam10, x="temp", y="precip", ax=ax)
     plt.title(f"Temperature vs. Precipitation ({crime_filterTeam10})")
@@ -114,6 +115,7 @@ elif sectionTeam10 == "Interactive Dashboard":
 
     # Visualization 3: Line Chart of Crime Frequency by Temperature
     st.subheader("Visualization 3: Temperature vs. Crime Frequency")
+    st.write("Show up the frequency of crimes at different temperature levels for the selected crime type.")
     crime_tempTeam10 = filtered_dataTeam10.groupby('temp').size()
     fig, ax = plt.subplots()
     crime_tempTeam10.plot(ax=ax)
