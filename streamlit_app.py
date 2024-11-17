@@ -125,7 +125,7 @@ elif sectionTeam10 == "Interactive Dashboard":
 elif sectionTeam10 == "Insights":
     st.header("Key Insights")
     st.write("""
-    Key Insights
+  
 **1. Crimes and Temperature:**
 Crimes are most frequent during moderate temperatures, particularly between 10°C and 20°C. 
 This suggests that people are more active outdoors in comfortable weather, leading to increased crime opportunities.
