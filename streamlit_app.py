@@ -125,9 +125,17 @@ elif sectionTeam10 == "Interactive Dashboard":
 elif sectionTeam10 == "Insights":
     st.header("Key Insights")
     st.write("""
-    1. **Crimes occur more frequently at moderate temperatures**: Increase around 20-25°C.
-    2. **Rainy days have fewer crimes**: Precipitation acts as a deterrent.
-    3. **Crime types vary with weather conditions**: E.g., thefts increase on warmer days.
+    Key Insights
+**1. Crimes and Temperature:**
+Crimes are most frequent during moderate temperatures, particularly between 10°C and 20°C. 
+This suggests that people are more active outdoors in comfortable weather, leading to increased crime opportunities.
+
+**2. Crimes and Precipitation**:
+Most crimes occur during low or no precipitation conditions. 
+Heavy rainfall appears to act as a natural deterrent for criminal activities.
+
+**3. Variable Correlations:*** A moderate positive correlation exists between precipitation 
+and humidity (correlation coefficient: 0.42), indicating they often rise together. However, other weather variables (e.g., temperature and windspeed) show weak or negligible correlations with crime occurrences.
     """)
 
 elif sectionTeam10 == "Recommendations":
