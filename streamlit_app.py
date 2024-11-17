@@ -10,7 +10,6 @@ def load_data():
     data.dropna(subset=['offensedescription', 'temp', 'precip'], inplace=True)
     data['datetime'] = pd.to_datetime(data['datetime'])
     data['month'] = data['datetime'].dt.month
-    data['year'] = data['datetime'].dt.year
     return data
 
 dataTeam10 = load_data()
@@ -40,10 +39,9 @@ if sectionTeam10 == "Introduction":
 elif sectionTeam10 == "Data Exploration":
     st.header("Data Exploration")
 
-    # Filters: Crime Type, Year, and Month
+    # Filters: Crime Type and Month
     st.sidebar.header("Filters")
     crime_filterTeam10 = st.sidebar.selectbox("Select Crime Type", dataTeam10['offensedescription'].unique())
-    year_filterTeam10 = st.sidebar.selectbox("Select Year", dataTeam10['year'].unique())
     month_filterTeam10 = st.sidebar.selectbox(
         "Select Month",
         options={
@@ -59,7 +57,6 @@ elif sectionTeam10 == "Data Exploration":
     # Filter data
     filtered_dataTeam10 = dataTeam10[
         (dataTeam10['offensedescription'] == crime_filterTeam10) &
-        (dataTeam10['year'] == year_filterTeam10) &
         (dataTeam10['month'] == month_filterTeam10)
     ]
 
