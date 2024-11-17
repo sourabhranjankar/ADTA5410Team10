@@ -85,15 +85,18 @@ elif sectionTeam10 == "Interactive Dashboard":
     crime_filterTeam10 = st.sidebar.selectbox("Select Crime Type", dataTeam10['offensedescription'].unique())
     filtered_dataTeam10 = dataTeam10[dataTeam10['offensedescription'] == crime_filterTeam10]
 
-    # Visualization 1: Bar Chart of Crime Types
-    st.subheader("Visualization 1: Crime Types Distribution")
-    crime_countsTeam10 = dataTeam10['offensedescription'].value_counts()
-    fig, ax = plt.subplots()
-    crime_countsTeam10.plot(kind='bar', ax=ax)
-    plt.title("Distribution of Crime Types")
-    plt.xlabel("Crime Type")
-    plt.ylabel("Frequency")
-    st.pyplot(fig)
+    # Visualization 1: Horizontal Bar Chart for Crime Types Distribution
+st.subheader("Visualization 1: Crime Types Distribution")
+st.write("Distribution of the most common crime types.")
+crime_countsTeam10 = dataTeam10['offensedescription'].value_counts().head(10)  # Top 10 crimes
+fig, ax = plt.subplots(figsize=(8, 6))
+crime_countsTeam10.plot(kind='barh', ax=ax, color='skyblue')
+plt.title("Top 10 Most Common Crime Types")
+plt.xlabel("Frequency")
+plt.ylabel("Crime Type")
+plt.gca().invert_yaxis()  # Reverse the order for better readability
+st.pyplot(fig)
+
 
     # Visualization 2: Scatter Plot for Selected Crime Type
     st.subheader("Visualization 2: Temperature vs. Precipitation")
